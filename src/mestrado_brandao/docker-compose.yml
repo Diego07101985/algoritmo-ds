@@ -1,0 +1,9 @@
+version: "3"
+services:
+  mlops:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: data-mlops
+    restart: unless-stopped

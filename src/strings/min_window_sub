@@ -1,0 +1,86 @@
+# Min Window Substring
+# Have the function MinWindowSubstring(strArr) take the array of strings stored in strArr, 
+# which will contain only two strings, the first parameter being the string N and the second parameter being a string K of some characters,
+# and your goal is to determine the smallest substring of N that contains all the characters in K. For example: 
+#     if strArr is ["aaabaaddae", "aed"] then the smallest substring of N that contains the characters a, e, and d is "dae" located at the end of the string.
+#     So for this example your program should return the string dae.
+
+# Another example: if strArr is ["aabdccdbcacd", "aad"] then the smallest substring of N that contains all of the characters in K is "aabd" which is located at the beginning of the string.
+# Both parameters will be strings ranging in length from 1 to 50 characters and all of K's characters will exist somewhere in the string N. Both strings will only contains lowercase alphabetic characters.
+
+
+# Input: ["ahffaksfajeeubsne", "jefaa"]
+# Output: aksfaje
+
+class EvalueteWindow:
+    def __init__(self,word,point):
+        self.word = word
+        self.point = point
+        
+def pre_proc_windows_with_all_elements(janelas,N):
+        proc_janela = []
+        for janela in janelas:
+            count = 0
+            for i in N:
+                if janela.count(i) >= N.count(i):
+                   count+=1
+            if(count == len(N)):
+                proc_janela.append(janela)
+
+        return proc_janela
+    
+    
+def evaluete_windows(janelas,N):
+    evaluetes = []
+    new_janelas = [ i for i in janelas if len(i)>=len(N)]
+    new_janelas = pre_proc_windows_with_all_elements(new_janelas,N)
+    for word_window in new_janelas :
+        point = 0
+        for i in N:
+            if i in word_window:
+                point += 1
+    
+        word_point = point/len(word_window)
+        evaluetes.append(EvalueteWindow(word_window,word_point))
+    return evaluetes
+
+def createWindows(K):
+    janelas = []
+    short_window = 0
+    for i in range(len(K)):
+        janela= ''
+        for j in range(short_window,len(K),1):
+            janela += K[j]
+            # if(len(janela)==1):
+            #     continue
+            janelas.append(janela)
+        short_window = short_window + 1
+    return janelas
+
+
+def MinWindowSubstring(strArr):
+     janelas  =  createWindows(strArr[0])
+     evaluetes = evaluete_windows(janelas,strArr[1])
+     max_point  = max(evaluete.point for evaluete in evaluetes)
+     min_win =  [evaluete for evaluete in evaluetes if evaluete.point == max_point]
+     return min_win[0].word
+     
+     
+  # code goes here
+#   return strArr
+
+# keep this function call here 
+print(MinWindowSubstring(["ahffaksfajeeubsne", "jefaa"]))
+
+
+
+
+
+
+# ["ahffaksfajeeubsne", "jefaa"]
+
+
+
+# aksfaje
+
+# ["aaffhkksemckelloe", "fhea"]
